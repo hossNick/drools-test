@@ -1,12 +1,18 @@
 package org.example.entities;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class Company {
 
+    @Id
+    @GeneratedValue
     private UUID id;
     private String name;
+    @OneToMany
     private List<Car> carList;
 
 

@@ -1,17 +1,23 @@
 package org.example.entities;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class Person {
 
+    @Id
+    @GeneratedValue
     private UUID id;
     private String nationalId;
     private String name;
     private String surname;
     private String address;
     private String email;
+    @OneToMany
     private List<Contract> contracts;
 
 
