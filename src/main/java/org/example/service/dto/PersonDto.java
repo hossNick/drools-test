@@ -1,26 +1,19 @@
-package org.example.entities;
+package org.example.service.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+public class PersonDto {
 
-public class Person {
-
-    private UUID id;
     private String nationalId;
     private String name;
     private String surname;
     private String address;
     private String email;
-    private List<Contract> contracts;
 
-
-    public UUID getId() {
-        return id;
+    public String getNationalId() {
+        return nationalId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
     }
 
     public String getName() {
@@ -53,23 +46,5 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getNationalId() {
-        return nationalId;
-    }
-
-    public void setNationalId(String nationalId) {
-        this.nationalId = nationalId;
-    }
-
-    public List<Contract> getContracts() {
-        if(contracts == null)
-            contracts = new ArrayList<Contract>();
-        return contracts;
-    }
-
-    public void setContracts(List<Contract> contracts) {
-        this.contracts = contracts;
     }
 }
