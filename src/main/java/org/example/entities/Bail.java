@@ -8,9 +8,9 @@ import java.time.LocalDate;
 public class Bail {
 
     private Long amount;
+    @Column(name = "payment_method")
     private String paymentMethod;
     private LocalDate paymentDate;
-    private boolean refunded;
 
     public Long getAmount() {
         return amount;
@@ -36,11 +36,4 @@ public class Bail {
         this.paymentDate = paymentDate;
     }
 
-    public boolean isRefunded() {
-        return refunded;
-    }
-
-    public void setRefunded(boolean refunded) {
-        this.refunded = refunded;
-    }
 }

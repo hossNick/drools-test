@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(schema = "rule_engine",name = "car")
 public class Car {
 
     @Id

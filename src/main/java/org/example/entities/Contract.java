@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "contract",schema = "rule_engine")
 public class Contract {
 
     @Id
@@ -14,15 +15,14 @@ public class Contract {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @ManyToOne
-    @JoinColumn(name = "person")
+    @JoinColumn(name = "owner")
     private Person owner;
     @ManyToOne
     @JoinColumn(name = "car")
     private Car car;
     private Long days;
-    @ManyToOne
-    @JoinColumn(name = "bail")
-    private PersonBail bail;
+    @Embedded
+    private Bail bail;
 
 
     public UUID getId() {
@@ -73,11 +73,11 @@ public class Contract {
         this.days = days;
     }
 
-    public PersonBail getBail() {
+    public Bail getBail() {
         return bail;
     }
 
-    public void setBail(PersonBail bail) {
+    public void setBail(Bail bail) {
         this.bail = bail;
     }
 }
