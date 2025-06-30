@@ -1,15 +1,23 @@
 package org.example.entities;
 
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
+@Entity
 public class Car {
 
+    @Id
+    @GeneratedValue
     private UUID id;
     private String code;
     private String name;
     private String color;
     private Long price;
+    @ManyToOne
+    @JoinColumn(name = "company")
+    private Company company;
+    private Long fare;
 
     public String getName() {
         return name;
@@ -49,5 +57,21 @@ public class Car {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Long getFare() {
+        return fare;
+    }
+
+    public void setFare(Long fare) {
+        this.fare = fare;
     }
 }

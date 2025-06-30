@@ -1,22 +1,37 @@
 package org.example.entities;
 
-
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
 public class Contract {
 
+    @Id
+    @GeneratedValue
     private UUID id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @ManyToOne
+    @JoinColumn(name = "person")
     private Person owner;
-    private Company company;
+    @ManyToOne
+    @JoinColumn(name = "car")
     private Car car;
     private Long days;
-    private CounterType type;
+    @ManyToOne
+    @JoinColumn(name = "bail")
     private Bail bail;
 
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public LocalDateTime getStartDate() {
         return startDate;
@@ -40,14 +55,6 @@ public class Contract {
 
     public void setOwner(Person owner) {
         this.owner = owner;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
     public Car getCar() {
