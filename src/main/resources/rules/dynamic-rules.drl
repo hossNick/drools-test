@@ -1,0 +1,35 @@
+package com.insurance.rules;
+
+import java.util.List;
+
+import org.example.core.model.RuleDefinition;
+import org.example.core.model.DynamicFact;
+import java.util.Set;
+
+global org.slf4j.Logger logger;
+global Set ruleDefinitions;
+
+
+rule "Dynamic Rule Evaluator"
+no-loop
+    salience 1000
+    when
+        $rule : RuleDefinition() from ruleDefinitions
+        $fact : DynamicFact(
+            factType.contains($rule.getFactType())
+        )
+        eval($rule.evaluate($fact))
+    then
+        logger.info("Executing rule: " + $rule.getRuleName() + " for fact: " + $fact.getFactId());
+        $rule.execute($fact);
+end
+
+
+rule "Log Results"
+no-loop
+    salience -1000
+    when
+        $fact : DynamicFact(processed == true)
+    then
+        logger.info("Results for " + $fact.getFactId() + ": " + $fact.getResults());
+end
