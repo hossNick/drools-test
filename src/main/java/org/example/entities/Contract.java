@@ -73,14 +73,6 @@ public class Contract {
         this.days = days;
     }
 
-    public CounterType getType() {
-        return type;
-    }
-
-    public void setType(CounterType type) {
-        this.type = type;
-    }
-
     public Bail getBail() {
         return bail;
     }
