@@ -1,17 +1,10 @@
 package org.example.entities;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.UUID;
 
-@Document(collation = "companyFare")
 public class CompanyFare {
 
-    @Id
     private UUID id;
-    @DBRef
     private Company company;
     private CounterType type;
     private Long fare;

@@ -1,24 +1,17 @@
 package org.example.entities;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Document(collation = "contract")
 public class Contract {
 
-    @Id
     private UUID id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    @DBRef
     private Person owner;
-    @DBRef
     private Company company;
-    @DBRef
     private Car car;
     private Long days;
     private CounterType type;
