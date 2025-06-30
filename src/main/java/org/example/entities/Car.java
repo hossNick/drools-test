@@ -18,6 +18,7 @@ public class Car {
     @JoinColumn(name = "company")
     private Company company;
     private Long fare;
+    private Boolean available;
 
     public String getName() {
         return name;
@@ -73,5 +74,13 @@ public class Car {
 
     public void setFare(Long fare) {
         this.fare = fare;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }

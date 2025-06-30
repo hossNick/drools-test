@@ -22,7 +22,7 @@ public class Contract {
     private Long days;
     @ManyToOne
     @JoinColumn(name = "bail")
-    private Bail bail;
+    private PersonBail bail;
 
 
     public UUID getId() {
@@ -73,11 +73,11 @@ public class Contract {
         this.days = days;
     }
 
-    public Bail getBail() {
+    public PersonBail getBail() {
         return bail;
     }
 
-    public void setBail(Bail bail) {
+    public void setBail(PersonBail bail) {
         this.bail = bail;
     }
 }

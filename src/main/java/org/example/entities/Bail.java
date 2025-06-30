@@ -1,42 +1,46 @@
 package org.example.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
-@Entity
+@Embeddable
 public class Bail {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private String name;
-    private Long price;
+    private Long amount;
+    private String paymentMethod;
+    private LocalDate paymentDate;
+    private boolean refunded;
 
-    public UUID getId() {
-        return id;
+    public Long getAmount() {
+        return amount;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
-    public String getName() {
-        return name;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public Long getPrice() {
-        return price;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public boolean isRefunded() {
+        return refunded;
+    }
+
+    public void setRefunded(boolean refunded) {
+        this.refunded = refunded;
     }
 }
