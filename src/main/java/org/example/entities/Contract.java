@@ -14,14 +14,13 @@ public class Contract {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @ManyToOne
-    @JoinColumn(name = "person")
+    @JoinColumn(name = "owner")
     private Person owner;
     @ManyToOne
     @JoinColumn(name = "car")
     private Car car;
     private Long days;
-    @ManyToOne
-    @JoinColumn(name = "bail")
+    @Embedded
     private Bail bail;
 
 
@@ -71,14 +70,6 @@ public class Contract {
 
     public void setDays(Long days) {
         this.days = days;
-    }
-
-    public CounterType getType() {
-        return type;
-    }
-
-    public void setType(CounterType type) {
-        this.type = type;
     }
 
     public Bail getBail() {
