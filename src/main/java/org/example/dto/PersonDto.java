@@ -1,6 +1,8 @@
-package org.example.service.dto;
+package org.example.dto;
 
-public class PersonDto {
+import org.example.config.BaseDto;
+
+public class PersonDto extends BaseDto {
 
     private String nationalId;
     private String name;
