@@ -45,17 +45,8 @@ public class ContractController {
     }
 
     @GetMapping("/test-contract")
-    public ResponseEntity<Contract> createAndEvaluateTestContract(@RequestParam String personName,
-                                                                      @RequestParam int personAge,
-                                                                      @RequestParam String carMake,
-                                                                      @RequestParam String carModel,
-                                                                      @RequestParam int carYear,
-                                                                      @RequestParam int rentalDays) {
-        Person person = new Person(personName, personAge, false, null);
-        Car car = carRepository.findCarByDetails(carMake, carModel, carYear)
-                .orElseThrow(() -> new RuntimeException("Car not found: " + carMake + " " + carModel));
-        Contract contract = new Contract(UUID.randomUUID().toString(), person, car, rentalDays, 0, 0, 0, null, null);
-        Contract evaluatedContract = rentalService.evaluateRentalContract(contract);
+    public ResponseEntity<Contract> createAndEvaluateTestContract(@RequestBody Contract contract) {
+         Contract evaluatedContract = rentalService.evaluateRentalContract(contract);
         return ResponseEntity.ok(evaluatedContract);
     }
 
