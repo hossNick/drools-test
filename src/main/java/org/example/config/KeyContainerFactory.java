@@ -29,7 +29,6 @@ public class KeyContainerFactory {
     protected final String prePath = "rules/";
     private final Map<String, KieContainer> kieContainers = new ConcurrentHashMap<>();
     private final KieServices kieServices = KieServices.Factory.get();
-    // In-memory storage for our DRL rules. Key: ruleId/ruleName, Value: DRL content
     private final Map<String, String> activeRules = new ConcurrentHashMap<>();
 
     public KieContainer getKieContainerForEntity(String entityName) throws IOException {

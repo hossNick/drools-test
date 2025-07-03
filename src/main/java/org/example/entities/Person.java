@@ -1,13 +1,14 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
+import org.example.config.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Person {
+public class Person extends BaseEntity {
 
     @Id
     @GeneratedValue
