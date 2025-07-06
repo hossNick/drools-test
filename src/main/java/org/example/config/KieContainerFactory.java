@@ -6,23 +6,25 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Component
-public class KeyContainerFactory {
+@Configuration
+public class KieContainerFactory {
 
-    private final Logger log = LoggerFactory.getLogger(KeyContainerFactory.class);
+    private final Logger log = LoggerFactory.getLogger(KieContainerFactory.class);
     private final String GROUP_ID = "com.example.carrental";
     private final String ARTIFACT_ID = "dynamic-rules";
     private final AtomicLong VERSION_COUNTER = new AtomicLong(1);
@@ -35,9 +37,14 @@ public class KeyContainerFactory {
         return kieContainers.computeIfAbsent(entityName, this::createKieContainer);
     }
 
+    @Bean
+    public KieServices kieService() {
+        return  KieServices.Factory.get();
+    }
+
     private KieContainer createKieContainer(String entityName) {
         initRuleFile(entityName);
-        KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
+        KieFileSystem kieFileSystem = kieService().newKieFileSystem();
 
         String newVersion = VERSION_COUNTER.getAndIncrement() + ".0-SNAPSHOT";
         ReleaseId releaseId = kieServices.newReleaseId(GROUP_ID, ARTIFACT_ID, newVersion);
@@ -112,5 +119,38 @@ public class KeyContainerFactory {
             }
         }
 
+    }
+
+    /**
+     * Adds a new rule or updates an existing rule.
+     * @param ruleName A unique identifier for the rule (e.g., "my-custom-discount-rule").
+     * @param drlContent The full DRL content of the rule, including package and imports.
+     */
+    public void addOrUpdateRule(String ruleName, String drlContent,String entityName) throws IOException {
+        // We use a convention for the rule's path within the KieFileSystem
+        // The ruleName will be part of the DRL file path, allowing specific updates.
+        String rulePath = "rules/dynamic/" + ruleName.replaceAll("[^a-zA-Z0-9.-]", "_") + ".drl";
+        activeRules.put(rulePath, drlContent);
+        log.info("Rule '{}' added/updated.", ruleName);
+        getKieContainerForEntity(entityName); // Rebuild and update the container immediately
+    }
+
+    /**
+     * Deletes a rule by its name.
+     * @param ruleName The unique identifier of the rule to delete.
+     */
+    public void deleteRule(String ruleName, String entityName) throws IOException {
+        String rulePath = "rules/dynamic/" + ruleName.replaceAll("[^a-zA-Z0-9.-]", "_") + ".drl";
+        if (activeRules.remove(rulePath) != null) {
+            log.info("Rule '{}' deleted.", ruleName);
+            getKieContainerForEntity(entityName); // Rebuild and update the container immediately
+        } else {
+            log.info("Rule '{}' not found for deletion.", ruleName);
+        }
+    }
+
+    // Expose active rules for debugging/listing
+    public Map<String, String> getActiveRules() {
+        return new HashMap<>(activeRules);
     }
 }

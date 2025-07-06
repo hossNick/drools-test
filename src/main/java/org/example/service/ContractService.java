@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.config.KieContainerFactory;
 import org.example.entities.Contract;
 import org.example.repositories.CarRepository;
 import org.kie.api.runtime.KieContainer;
@@ -8,15 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class ContractService {
 
     private final Logger log = LoggerFactory.getLogger(ContractService.class);
-    private final KieContainer kieContainer;
+    private final KieContainerFactory kieContainer;
     private final CarRepository carRepository; // Inject the mock repository
 
 
-    public ContractService(KieContainer kieContainer, CarRepository carRepository) {
+    public ContractService(KieContainerFactory kieContainer, CarRepository carRepository) {
         this.kieContainer = kieContainer;
         this.carRepository = carRepository;
     }
@@ -24,12 +27,12 @@ public class ContractService {
 
 
 
-    public Contract evaluateRentalContract(Contract contract) {
+    public Contract evaluateRentalContract(Contract contract) throws IOException {
         // Create a new KieSession from the KieContainer.
         // Each KieSession is a runtime instance of the rule engine.
         // For stateless sessions, it's good practice to create a new one per request
         // and dispose of it afterward to avoid state contamination.
-        KieSession kieSession = kieContainer.newKieSession("CarRentalKSession"); // Use the named session from kmodule.xml
+        KieSession kieSession = kieContainer.getKieContainerForEntity("contract").newKieSession("CarRentalKSession"); // Use the named session from kmodule.xml
 
         try {
             // Set the global variable.
