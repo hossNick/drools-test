@@ -27,9 +27,10 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
-        <drools.version>10.0.0</drools.version>
+        <java.version>17</java.version>
+        <drools.version>8.44.0.Final</drools.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,27 +41,85 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
 
-        <!-- Drools RuleUnits -->
+
+
+<!--org.drools-->
+<!--        <dependency>-->
+<!--            <groupId>org.drools</groupId>-->
+<!--            <artifactId>drools-core</artifactId>-->
+<!--            <version>8.44.1.Final</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-ruleunits-engine</artifactId>
-            <version>8.44.0.Final</version>
+            <version>8.44.1.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-mvel</artifactId>
+            <version>8.44.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-xml-support</artifactId>
+            <version>8.44.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>8.44.1.Final</version>
+        </dependency>
+
+
+
+<!--org.kie.kogito-->
+<!--        <dependency>-->
+<!--            <groupId>org.kie.kogito</groupId>-->
+<!--            <artifactId>drools-core</artifactId>-->
+<!--            <version>1.15.0.Final</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-spring</artifactId>
             <version>7.74.1.Final</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.kie</groupId>-->
+<!--            <artifactId>kie-server-spring-boot-starter</artifactId>-->
+<!--            <version>7.74.1.Final</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.kie.kogito</groupId>-->
+<!--            <artifactId>kogito-api</artifactId>-->
+<!--            <version>1.44.1.Final</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.kie.kogito</groupId>-->
+<!--            <artifactId>kogito-ruleunits</artifactId>-->
+<!--            <version>1.16.1.Final</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.kie</groupId>-->
+<!--            <artifactId>kie-api</artifactId>-->
+<!--            <version>8.44.1.Final</version>-->
+<!--        </dependency>-->
+
+
+
     </dependencies>
 
     <build>

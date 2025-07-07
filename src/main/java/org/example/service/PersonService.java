@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.drools.ruleunit.RuleUnitExecutor;
-import org.example.config.BaseService;
 import org.example.dto.PersonDto;
 import org.example.entities.Person;
 import org.example.entities.Rule;
@@ -9,54 +8,57 @@ import org.example.repositories.PersonRepository;
 import org.example.rules.PersonRuleUnits;
 import org.example.rules.RuleService;
 import org.kie.api.KieBase;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.Message;
+import org.kie.internal.io.ResourceFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PersonService extends BaseService<PersonDto, Person> {
+public class PersonService  {
 
     private final PersonRepository personRepository;
     private final RuleService ruleService;
-    private final RuleUnitExecutor executor;
 
-    public PersonService(PersonRepository personRepository, RuleService ruleService
-            , RuleUnitExecutor executor) {
+    public PersonService(PersonRepository personRepository, RuleService ruleService) {
         this.personRepository = personRepository;
         this.ruleService = ruleService;
-        this.executor = executor;
     }
 
     public Person createPerson(PersonDto personDto) {
-        PersonRuleUnits personRuleUnits= new PersonRuleUnits(this);
+
 
     }
 
-    private void executeDynamicRules(PersonDto dto, PersonRuleUnits ruleUnit) {
+    private void executeDynamicRules(PersonDto dto) {
         // Get all active rules from DB
         List<Rule> rules = ruleService.findByType("Person");
+        KieServices ks = KieServices.Factory.get();
+        KieFileSystem kfs = ks.newKieFileSystem();
+        List<String> ruleContents= rules.stream().map(Rule::toString).toList();
+        String ruleAppended= String.join("\n", ruleContents);
+        kfs.write(ResourceFactory.newByteArrayResource(ruleAppended.getBytes())
+                .setSourcePath("src/main/resources/rules/dynamic-validation.drl"));
 
-        // Create a temporary KieBase
-        KieBase kieBase = createKieBaseFromRules(rules);
+        KieBuilder kieBuilder = ks.newKieBuilder(kfs);
+        kieBuilder.buildAll(); // Compile all resources in KieFileSystem
 
-        // Execute
-        executor.bind(kieBase);
-        ruleUnit.getPersons().append(dto);
-        executor.run(ruleUnit);
-    }
+        // Check for compilation errors
+        if (kieBuilder.getResults().hasMessages(Message.Level.ERROR)) {
+            throw new RuntimeException("Error compiling dynamic rules: " + kieBuilder.getResults().toString());
+        }
+        KieBase tempKieBase = ks.newKieContainer(ks.getRepository().getDefaultReleaseId()).getKieBase();
+        RuleUnitExecutor ruleUnitExecutor = RuleUnitExecutor.create().bind(tempKieBase);
+        PersonRuleUnits unit = new PersonRuleUnits(this);
 
-    private KieBase createKieBaseFromRules(List<Rule> rules) {
-        KieServices kieServices = KieServices.get();
-        KieFileSystem kfs = kieServices.newKieFileSystem();
-
-        // Add each rule from DB
-        rules.forEach(rule ->
-                kfs.write(ResourceFactory.newByteArrayResource(rule.getContent().getBytes())
-                        .setTargetPath(rule.getName() + ".drl")
-                );
-
-        // Build the KieBase
-        KieBuilder kieBuilder = kieServices.newKieBuilder(kfs).buildAll();
-        return kieBuilder.getKieBase();
+        try {
+            ruleUnitExecutor.run(unit);
+            unit.getPersons().append(dto);
+        }finally {
+            ruleUnitExecutor.dispose();
+        }
     }
 }

@@ -1,22 +1,23 @@
 package org.example.rules;
 
+import org.drools.ruleunit.RuleUnit;
 import org.drools.ruleunits.api.DataStream;
-import org.drools.ruleunits.api.RuleUnitData;
 import org.example.dto.PersonDto;
 import org.example.service.PersonService;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class PersonRuleUnits implements RuleUnitData {
+public class PersonRuleUnits implements RuleUnit {
 
+//    @Inject
     private final PersonService personService;
     private DataStream<PersonDto> persons;
     private Set<String> errors;
 
     public PersonRuleUnits(PersonService personService) {
         this.personService = personService;
-        errors = new HashSet<String>();
+        errors = new HashSet<>();
     }
 
     public PersonService getPersonService() {
@@ -28,6 +29,8 @@ public class PersonRuleUnits implements RuleUnitData {
     }
 
     public Set<String> getErrors() {
+        if (errors == null)
+            errors = new HashSet<>();
         return errors;
     }
 

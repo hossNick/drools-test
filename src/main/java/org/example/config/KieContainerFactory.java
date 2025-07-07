@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Configuration
 public class KieContainerFactory {
 
     private final Logger log = LoggerFactory.getLogger(KieContainerFactory.class);
@@ -37,7 +36,6 @@ public class KieContainerFactory {
         return kieContainers.computeIfAbsent(entityName, this::createKieContainer);
     }
 
-    @Bean
     public KieServices kieService() {
         return  KieServices.Factory.get();
     }
