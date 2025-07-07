@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(schema = "rule_engine",name = "company")
 public class Company {
 
     @Id

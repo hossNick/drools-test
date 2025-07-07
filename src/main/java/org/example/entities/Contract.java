@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(schema = "rule_engine",name = "contract")
 public class Contract {
 
     @Id

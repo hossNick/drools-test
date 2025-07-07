@@ -1,0 +1,18 @@
+package rules
+
+import org.example.dto.PersonDto
+
+rule "Name cannot be null"
+    when
+        $p : PersonDto(name == null || name.trim().isEmpty())
+    then
+        $p.getErrorDescription().add("name can not be null");
+end
+
+rule "Email must be valid"
+    when
+        $p : PersonDto(email == null ||
+                   !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
+    then
+        $p.getErrorDescription().add("Valid email is required");
+end

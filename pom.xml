@@ -27,8 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>17</java.version>
-        <drools.version>8.44.0.Final</drools.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
@@ -55,31 +54,36 @@
 
 
 <!--org.drools-->
-<!--        <dependency>-->
-<!--            <groupId>org.drools</groupId>-->
-<!--            <artifactId>drools-core</artifactId>-->
-<!--            <version>8.44.1.Final</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>10.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-ruleunits-api</artifactId>
+            <version>10.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-ruleunits-engine</artifactId>
-            <version>8.44.1.Final</version>
+            <version>10.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-mvel</artifactId>
-            <version>8.44.1.Final</version>
+            <version>10.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-xml-support</artifactId>
-            <version>8.44.1.Final</version>
+            <version>10.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-compiler</artifactId>
-            <version>8.44.1.Final</version>
+            <version>10.0.0</version>
         </dependency>
 
 
@@ -90,11 +94,11 @@
 <!--            <artifactId>drools-core</artifactId>-->
 <!--            <version>1.15.0.Final</version>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-spring</artifactId>
-            <version>7.74.1.Final</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.kie</groupId>-->
+<!--            <artifactId>kie-spring</artifactId>-->
+<!--            <version>7.74.1.Final</version>-->
+<!--        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>org.kie</groupId>-->
 <!--            <artifactId>kie-server-spring-boot-starter</artifactId>-->
@@ -111,12 +115,17 @@
 <!--            <artifactId>kogito-ruleunits</artifactId>-->
 <!--            <version>1.16.1.Final</version>-->
 <!--        </dependency>-->
-
+        <!-- https://mvnrepository.com/artifact/org.kie.kogito/kogito-spring-boot-starter -->
 <!--        <dependency>-->
-<!--            <groupId>org.kie</groupId>-->
-<!--            <artifactId>kie-api</artifactId>-->
-<!--            <version>8.44.1.Final</version>-->
+<!--            <groupId>org.kie.kogito</groupId>-->
+<!--            <artifactId>kogito-spring-boot-starter</artifactId>-->
+<!--            <version>1.44.1.Final</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>10.0.0</version>
+        </dependency>
 
 
 

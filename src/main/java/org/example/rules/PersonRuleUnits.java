@@ -1,14 +1,14 @@
 package org.example.rules;
 
-import org.drools.ruleunit.RuleUnit;
 import org.drools.ruleunits.api.DataStream;
+import org.drools.ruleunits.api.RuleUnitData;
 import org.example.dto.PersonDto;
 import org.example.service.PersonService;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class PersonRuleUnits implements RuleUnit {
+public class PersonRuleUnits implements RuleUnitData {
 
 //    @Inject
     private final PersonService personService;
@@ -41,4 +41,5 @@ public class PersonRuleUnits implements RuleUnit {
     public void addError(String error) {
         errors.add(error);
     }
+
 }
