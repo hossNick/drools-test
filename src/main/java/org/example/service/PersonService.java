@@ -18,9 +18,9 @@ public class PersonService extends BaseService<PersonDto, Person> {
         this.droolsService = droolsService;
     }
 
-    public Person createPerson(PersonDto personDto) {
-        PersonDto dto = evaluateDto(personDto);
-        droolsService.validateByEntityName(personDto);
+    public Person createPerson(PersonDto dto) {
+//        PersonDto dto = evaluateDto(personDto);
+        droolsService.validateByEntityName(dto);
         if (!dto.getErrorDescription().isEmpty()) {
             for (String s : dto.getErrorDescription()) {
                 throw new RuntimeException(s);

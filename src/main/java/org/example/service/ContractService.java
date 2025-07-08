@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
+//@Service
 public class ContractService {
 
     private final Logger log = LoggerFactory.getLogger(ContractService.class);

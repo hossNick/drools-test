@@ -29,6 +29,7 @@ public class DroolsService {
     }
 
     public void validateByEntityName(BaseDto dto) {
+        log.info("validateByEntityName " + dto.getClass().getSimpleName());
         List<Rule> rules = ruleService.getRuleByType(dto.getClass().getSimpleName());
         KieContainer kieContainer = createTempContainer(rules, dto.getClass().getSimpleName());
         StatelessKieSession kieSession = kieContainer.newStatelessKieSession(dto.getClass().getSimpleName());
@@ -48,7 +49,8 @@ public class DroolsService {
                 """, entityName);
         KieServices ks = KieServices.Factory.get();
         KieFileSystem kfs = ks.newKieFileSystem();
-        kfs.write("src/main/resources/META-INF/kmodule.xml", ks.getResources().newReaderResource(new java.io.StringReader(KMODULE_XML)));
+        kfs.write("src/main/resources/META-INF/kmodule.xml",
+                ks.getResources().newReaderResource(new java.io.StringReader(KMODULE_XML)));
         String newVersion = VERSION_COUNTER.getAndIncrement() + ".0-SNAPSHOT";
         ReleaseId releaseId = ks.newReleaseId(GROUP_ID, ARTIFACT_ID, newVersion);
         kfs.generateAndWritePomXML(releaseId); // Generate a pom.xml for the in-memory kjar

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/rental")
+//@RestController
+//@RequestMapping("/api/rental")
 public class ContractController {
 
     private final Logger log = LoggerFactory.getLogger(ContractController.class);

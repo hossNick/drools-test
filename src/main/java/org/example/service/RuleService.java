@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.config.DroolsService;
 import org.example.dto.RuleDto;
 import org.example.entities.Rule;
 import org.example.repositories.RuleRepository;
@@ -12,11 +11,11 @@ import java.util.List;
 public class RuleService {
 
     private final RuleRepository ruleRepository;
-    private final DroolsService droolsService;
+//    private final DroolsService droolsService;
 
-    public RuleService(RuleRepository ruleRepository, DroolsService droolsService) {
+    public RuleService(RuleRepository ruleRepository) {
         this.ruleRepository = ruleRepository;
-        this.droolsService = droolsService;
+//        this.droolsService = droolsService;
     }
 
     public List<Rule> getRuleByType(String type) {
@@ -28,7 +27,7 @@ public class RuleService {
         rule.setRuleType(ruleDto.getRuleType());
         rule.setRuleContent(ruleDto.getRuleContent());
         rule.setRuleName(ruleDto.getRuleName());
-        droolsService.createTempContainer(List.of(rule), ruleDto.getRuleType());
+//        droolsService.createTempContainer(List.of(rule), ruleDto.getRuleType());
         return ruleRepository.save(rule);
     }
 }
