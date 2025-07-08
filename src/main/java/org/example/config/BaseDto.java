@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BaseDto {
 
-    private List<String> errorDescription;
+    private List<String> errorDescription= new ArrayList<>();
 
     public List<String> getErrorDescription() {
         if(errorDescription.isEmpty())

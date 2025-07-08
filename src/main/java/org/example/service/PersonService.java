@@ -1,19 +1,18 @@
 package org.example.service;
 
-import org.drools.ruleunits.api.RuleUnitInstance;
-import org.drools.ruleunits.api.RuleUnitProvider;
 import org.example.dto.PersonDto;
 import org.example.entities.Person;
 import org.example.entities.Rule;
 import org.example.repositories.PersonRepository;
-import org.example.rules.PersonRuleUnits;
 import org.example.rules.RuleService;
-import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.builder.*;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
-import org.kie.internal.io.ResourceFactory;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.StringReader;
@@ -23,25 +22,24 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class PersonService {
 
+    private static final Logger log = LoggerFactory.getLogger(PersonService.class);
     private final PersonRepository personRepository;
     private final RuleService ruleService;
-    private final KieContainer container;
     private final AtomicLong VERSION_COUNTER = new AtomicLong(1);
 
     public PersonService(PersonRepository personRepository, RuleService ruleService, KieContainer container) {
         this.personRepository = personRepository;
         this.ruleService = ruleService;
-        this.container = container;
     }
 
     public Person createPerson(PersonDto personDto) {
         executeDynamicRules(personDto);
-        if (personDto.getErrorDescription().size() > 1) {
+        if (!personDto.getErrorDescription().isEmpty()) {
             for (String s : personDto.getErrorDescription()) {
                 throw new RuntimeException(s);
             }
         }
-        Person person = createPerson(personDto);
+        Person person = convertPersonDtoToPerson(personDto);
         return personRepository.save(person);
     }
 
@@ -57,12 +55,11 @@ public class PersonService {
     }
 
     private void executeDynamicRules(PersonDto dto) {
-        // Get all active rules from DB
         String KMODULE_XML = """
                 <?xml version="1.0" encoding="UTF-8"?>
                 <kmodule xmlns="http://www.drools.org/xsd/kmodule">
-                    <kbase name="CarRentalKBase" packages="rules" default="true">
-                        <ksession name="CarRentalKSession" default="true" type="stateless"/>
+                    <kbase name="PersonValidate" packages="rules" default="true">
+                        <ksession name="PersonValidate" default="true" type="stateless"/>
                     </kbase>
                 </kmodule>
                 """;
@@ -73,27 +70,33 @@ public class PersonService {
         String newVersion = VERSION_COUNTER.getAndIncrement() + ".0-SNAPSHOT";
         ReleaseId releaseId = ks.newReleaseId("com.example.riton", "dynamic-rules", newVersion);
         kfs.generateAndWritePomXML(releaseId); // Generate a pom.xml for the in-memory kjar
-        List<String> ruleContents = rules.stream().map(Rule::toString).toList();
-        for (String ruleContent : ruleContents) {
+//        List<String> ruleContents = rules.stream().map(Rule::getRuleContent).toList();
+        for (Rule r : rules) {
 //            kfs.write(ResourceFactory.newByteArrayResource(ruleAppended.getBytes())
 //                    .setSourcePath("src/main/resources/rules/dynamic-validation.drl"));
-            kfs.write("src/main/resources/rules/dynamic-validation.drl",
-                    ks.getResources().newReaderResource(new StringReader(ruleContent))
+            log.info("Rule '{}'", r.getRuleContent());
+            StringBuilder sb = new StringBuilder("src/main/resources/rules/");
+            sb.append(r.getRuleName());
+            sb.append(".drl");
+            kfs.write(sb.toString(),
+                    ks.getResources().newReaderResource(new StringReader(r.getRuleContent()))
                             .setResourceType(ResourceType.DRL));
         }
 
 
         KieBuilder kieBuilder = ks.newKieBuilder(kfs);
-        kieBuilder.buildAll(); // Compile all resources in KieFileSystem
-
-        // Check for compilation errors
+        kieBuilder.buildAll();
         if (kieBuilder.getResults().hasMessages(Message.Level.ERROR)) {
             throw new RuntimeException("Error compiling dynamic rules: " + kieBuilder.getResults().toString());
         }
         KieModule km = kieBuilder.getKieModule();
         ks.getRepository().addKieModule(km);
-        KieContainer container = ks.newKieContainer(ks.getRepository().getDefaultReleaseId());
-        KieBase kbase = container.getKieBase();
+        KieContainer container = ks.newKieContainer(releaseId);
+
+        StatelessKieSession kieSession = container.newStatelessKieSession("PersonValidate");
+        kieSession.execute(dto);
+//        int ruleFired = kieSession.fireAllRules();
+//        log.info("Rule fired: {}", ruleFired);
 
 
 //        KieBase tempKieBase = ks.newKieContainer(ks.getRepository().getDefaultReleaseId()).getKieBase();

@@ -4,6 +4,7 @@ import org.kie.api.KieServices;
 import org.kie.api.builder.*;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -146,6 +147,31 @@ public class KieContainerFactory {
             log.info("Rule '{}' not found for deletion.", ruleName);
         }
     }
+
+//    KieSession kieSession = kieContainer.getKieContainerForEntity("contract").newKieSession("CarRentalKSession"); // Use the named session from kmodule.xml
+//
+//        try {
+//        // Set the global variable.
+//        // This makes the Spring-managed CarRepository instance available to your DRL rules.
+//        // The DRL rule can then call methods on this 'carRepository' object.
+//        kieSession.setGlobal("carRepository", carRepository);
+//
+//        // Insert facts into the working memory of the KieSession.
+//        // Drools will then evaluate these facts against the loaded rules.
+//        kieSession.insert(contract.getOwner()); // Insert person fact
+//        kieSession.insert(contract.getCar());   // Insert car fact
+//        kieSession.insert(contract);            // Insert contract fact
+//
+//        // Fire all rules that match the inserted facts.
+//        int rulesFired = kieSession.fireAllRules();
+//        log.info("Rules fired for contract {}: {}", contract.getId(), rulesFired);
+//
+//    } finally {
+//        // Dispose the KieSession to release resources.
+//        // This is crucial, especially for stateless sessions, to prevent memory leaks.
+//        kieSession.dispose();
+//    }
+//        return contract;
 
     // Expose active rules for debugging/listing
     public Map<String, String> getActiveRules() {
