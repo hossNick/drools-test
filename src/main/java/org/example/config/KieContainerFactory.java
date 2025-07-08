@@ -37,6 +37,12 @@ public class KieContainerFactory {
         return kieContainers.computeIfAbsent(entityName, this::createKieContainer);
     }
 
+    private KieModule kieModule;
+
+    public KieModule getLatestModule() {
+        return kieModule;
+    }
+
     public KieServices kieService() {
         return  KieServices.Factory.get();
     }
@@ -86,6 +92,7 @@ public class KieContainerFactory {
             throw new RuntimeException("Drools rule compilation failed!");
         }
         KieModule kieModule= kieBuilder.getKieModule();
+        this.kieModule = kieModule;
         kieServices.getRepository().addKieModule(kieModule);
         return kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
     }
