@@ -86,9 +86,15 @@
             <version>10.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>10.0.0</version>
+        </dependency>
 
 
-<!--org.kie.kogito-->
+
+        <!--org.kie.kogito-->
 <!--        <dependency>-->
 <!--            <groupId>org.kie.kogito</groupId>-->
 <!--            <artifactId>drools-core</artifactId>-->
@@ -104,7 +110,6 @@
 <!--            <artifactId>kie-server-spring-boot-starter</artifactId>-->
 <!--            <version>7.74.1.Final</version>-->
 <!--        </dependency>-->
-
 <!--        <dependency>-->
 <!--            <groupId>org.kie.kogito</groupId>-->
 <!--            <artifactId>kogito-api</artifactId>-->
@@ -121,14 +126,6 @@
 <!--            <artifactId>kogito-spring-boot-starter</artifactId>-->
 <!--            <version>1.44.1.Final</version>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-api</artifactId>
-            <version>10.0.0</version>
-        </dependency>
-
-
-
     </dependencies>
 
     <build>
