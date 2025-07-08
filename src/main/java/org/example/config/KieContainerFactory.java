@@ -6,8 +6,6 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -21,7 +19,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Configuration
+//@Configuration
 public class KieContainerFactory {
 
     private final Logger log = LoggerFactory.getLogger(KieContainerFactory.class);
@@ -37,7 +35,7 @@ public class KieContainerFactory {
         return kieContainers.computeIfAbsent(entityName, this::createKieContainer);
     }
 
-    @Bean
+//    @Bean
     public KieServices kieService() {
         return  KieServices.Factory.get();
     }
