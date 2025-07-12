@@ -60,3 +60,10 @@ create table rule_engine.contract
     bail_amount    integer
 );
 
+create table rule_engine.rule(
+                                 id uuid primary key ,
+                                 rule_type varchar(50),
+                                rule_name varchar(50),
+                                rule_content varchar(600)
+)
+

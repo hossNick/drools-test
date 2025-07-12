@@ -5,6 +5,8 @@ import org.example.entities.Person;
 import org.example.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/person")
@@ -17,7 +19,7 @@ public class PersonController {
 
 
     @PostMapping
-    public Person createPerson(@RequestBody PersonDto dto){
-        return personService.createPerson(dto);
+    public List<Person> createPerson(@RequestBody List<PersonDto> dto){
+        return personService.createPersonList(dto);
     }
 }

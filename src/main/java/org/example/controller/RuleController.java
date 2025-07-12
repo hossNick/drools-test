@@ -3,10 +3,11 @@ package org.example.controller;
 import org.example.dto.RuleDto;
 import org.example.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/rule")
@@ -26,10 +27,16 @@ public class RuleController {
             "then\n" +
             "    System.out.println(\"hello\");\n" +
             "end\n";
-    @PostMapping
-    public void addRule(@RequestBody RuleDto rule) {
-        rule.setRuleContent(ruleContent);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addRule(@RequestParam String ruleType,
+                        @RequestParam String ruleName,
+                        @RequestParam MultipartFile ruleFile) throws IOException {
+        RuleDto rule = new RuleDto();
+        rule.setRuleType(ruleType);
+        rule.setRuleName(ruleName);
+        rule.setRuleContent(new String(ruleFile.getBytes()));
         ruleService.createRule(rule);
     }
+
 
 }

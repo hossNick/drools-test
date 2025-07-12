@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RuleService {
 
     private final RuleRepository ruleRepository;
-    @Autowired
-    private DroolsService droolsService;
+
 
     public RuleService(RuleRepository ruleRepository) {
         this.ruleRepository = ruleRepository;

@@ -1,0 +1,12 @@
+package org.example.dto;
+
+import org.example.dto.PersonDto;
+
+rule "National ID is Duplicate"
+when
+    $person : PersonDto($nationalId : nationalId) from entry-point "MyEntryPoint"
+    exists PersonDto(nationalId == $nationalId, this != $person)
+then
+    System.out.println("✗ National ID " + $nationalId + " is duplicate");
+end
+
