@@ -1,8 +1,10 @@
 package org.example.service;
 
+import org.example.config.DroolsService;
 import org.example.dto.RuleDto;
 import org.example.entities.Rule;
 import org.example.repositories.RuleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +13,8 @@ import java.util.List;
 public class RuleService {
 
     private final RuleRepository ruleRepository;
-//    private final DroolsService droolsService;
+    @Autowired
+    private DroolsService droolsService;
 
     public RuleService(RuleRepository ruleRepository) {
         this.ruleRepository = ruleRepository;
